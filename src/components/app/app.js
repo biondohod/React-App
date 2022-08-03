@@ -19,7 +19,8 @@ class App extends Component {
                 {name: 'Leon Kennedy', salary: 5000, increase: false, promotion: false, id: 3},
                 {name: 'Jhin Khada', salary: 4444, increase: true, promotion: false, id: 4}
             ],
-            term: ''
+            term: '',
+            filter: 'all',
         }
         this.maxId = this.state.data[this.state.data.length - 1].id;
     }
@@ -75,15 +76,34 @@ class App extends Component {
         this.setState({term});
     }
 
-    getVisibileData = (data, term) => {
-        if (!term.length) {
-            return data;
+
+    onUpdateFilter = (filter) => {
+        this.setState({filter});
+    }
+
+    getVisibileData = () => {
+        const {data, filter, term} = this.state;
+        let newData = []
+        switch(filter) {
+            case 'promotion':
+                newData = data.filter(item => item.promotion);
+                break;
+            case 'moreThan1000':
+                newData = data.filter(item => item.salary > 1000);
+                break;
+            default: 
+                newData = data;
+                break;
         }
-        return data.filter((item) => item.name.toUpperCase().includes(term.toUpperCase()));
+
+        if (!term.length) {
+            return newData;
+        }
+        return newData.filter((item) => item.name.toUpperCase().includes(term.toUpperCase()));
     }
     
     render() {
-        const {data, term} = this.state;
+        const {data, filter} = this.state;
         let increaseCount = 0;
         data.forEach((item) => {
             if (item.increase) {
@@ -91,7 +111,7 @@ class App extends Component {
             }
         })
 
-        const visibleData = this.getVisibileData(data, term);
+        const visibleData = this.getVisibileData();
         return (
             <div className="app">
                 <AppInfo totalCount={data.length} 
@@ -99,7 +119,7 @@ class App extends Component {
     
                 <div className="search-panel">
                     <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
-                    <AppFilter />
+                    <AppFilter activeFilter={filter} onUpdateFilter={this.onUpdateFilter}/>
                 </div>
     
                 <EmployeesList data={visibleData}
