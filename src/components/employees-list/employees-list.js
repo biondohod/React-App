@@ -1,15 +1,17 @@
-import './employees-list.css';
-import EmployeesListItem from '../employees-list-item/employees-list-item';
 import { Component } from 'react';
+
+import EmployeesListItem from '../employees-list-item/employees-list-item';
+
+import './employees-list.css';
 
 class EmployeesList extends Component {
     render() {
-        const {data} = this.props;
+        const {data, onDelete} = this.props;
         
         const items = data.map((item) => {
             const {id, ...itemProps} = item;
             return (
-                <EmployeesListItem key={id} {...itemProps}/>
+                <EmployeesListItem key={id} {...itemProps} onDelete={() => onDelete(id)}/>
             );
         });
         return (

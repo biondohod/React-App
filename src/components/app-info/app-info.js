@@ -1,4 +1,5 @@
 import { Component } from 'react';
+
 import './app-info.css';
 
 class AppInfo extends Component {
