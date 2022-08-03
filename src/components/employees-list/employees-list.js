@@ -6,12 +6,15 @@ import './employees-list.css';
 
 class EmployeesList extends Component {
     render() {
-        const {data, onDelete} = this.props;
+        const {data, onDelete, onToggleIncrease, onTogglePromotion} = this.props;
         
         const items = data.map((item) => {
             const {id, ...itemProps} = item;
             return (
-                <EmployeesListItem key={id} {...itemProps} onDelete={() => onDelete(id)}/>
+                <EmployeesListItem key={id} {...itemProps} 
+                                   onDelete={() => onDelete(id)}
+                                   onToggleIncrease={() => onToggleIncrease(id)}
+                                   onTogglePromotion={() => onTogglePromotion(id)}/>
             );
         });
         return (

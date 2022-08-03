@@ -58,12 +58,41 @@ class App extends Component {
         }
 
     }
+
+    onToggleIncrease = (id) => {
+        this.setState(({data}) => ({
+            data: data.map(item => {
+                if (item.id === id) {
+                    return {...item, increase: !item.increase}
+                }
+                return item;
+            })
+        }))
+    }
+
+    onTogglePromotion = (id) => {
+        this.setState(({data}) => ({
+            data: data.map(item => {
+                if (item.id === id) {
+                    return {...item, promotion: !item.promotion}
+                }
+                return item;
+            })
+        }))
+    }
     
     render() {
         const {data} = this.state;
+        let increaseCount = 0;
+        data.forEach((item) => {
+            if (item.increase) {
+                increaseCount++;
+            }
+        })
         return (
             <div className="app">
-                <AppInfo />
+                <AppInfo totalCount={data.length} 
+                         increaseCount={increaseCount}/>
     
                 <div className="search-panel">
                     <SearchPanel />
@@ -71,7 +100,9 @@ class App extends Component {
                 </div>
     
                 <EmployeesList data={data}
-                               onDelete={this.deleteItem}/>
+                               onDelete={this.deleteItem}
+                               onToggleIncrease={this.onToggleIncrease}
+                               onTogglePromotion={this.onTogglePromotion}/>
                 <EmployeesAddForm onAdd={this.addItem}/>
             </div>
         );
