@@ -101,6 +101,20 @@ class App extends Component {
         }
         return newData.filter((item) => item.name.toUpperCase().includes(term.toUpperCase()));
     }
+
+    onInputSalary = (target, id) => {
+        console.log(target.value.replace(/[^\d]/ig, ''));
+        target.value = target.value.replace(/[^\d]/ig, '') + '$';
+        const {data} = this.state;
+        this.setState({
+            data: data.map((item) => {
+                if (item.id === id) {
+                    item.salary = target.value.replace(/[^\d]/ig, '');
+                }
+                return item;
+            })
+        })
+    }
     
     render() {
         const {data, filter} = this.state;
@@ -124,7 +138,8 @@ class App extends Component {
     
                 <EmployeesList data={visibleData}
                                onDelete={this.deleteItem}
-                               onToggleProp={this.onToggleProp}/>
+                               onToggleProp={this.onToggleProp}
+                               onInputSalary={this.onInputSalary}/>
                 <EmployeesAddForm onAdd={this.addItem}/>
             </div>
         );
